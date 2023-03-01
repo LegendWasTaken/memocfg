@@ -42,8 +42,15 @@ fn main() {
                 }
             }
         }
-        Some(("projects", _)) => {
-            println!("displaying active projects");
+        Some(("projects", sub_matches)) => {
+            match sub_matches.subcommand() {
+                Some(("create", _register_matches)) => {
+
+                }
+                _ => {
+                    cfg.list_projects();
+                }
+            }
         }
         _ => unreachable!(),
     }

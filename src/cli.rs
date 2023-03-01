@@ -61,5 +61,15 @@ pub fn cli() -> Command {
                     Command::new("list")
                         .about("List currently active projects")
                 )
+                .subcommand(
+                    Command::new("create")
+                        .about("Set new port range restriction for the specified user")
+                        .arg(
+                            Arg::new("project_name")
+                                .action(ArgAction::Set)
+                                .required(true)
+                                .num_args(1)
+                        )
+                )
         )
 }

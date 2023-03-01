@@ -19,9 +19,16 @@ impl PortRange {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Project {
+    pub nice_name: String,
+    pub full_name: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct User {
     pub name: String,
     pub port_range: PortRange,
+    pub projects: Vec<Project>,
 }
 
 impl User {
@@ -33,6 +40,7 @@ impl User {
         User {
             name: name.to_string(),
             port_range,
+            projects: vec![],
         }
     }
 }
@@ -76,6 +84,16 @@ impl Config {
             let range = user.port_range;
             let name = user.clone().name;
             println!("{}:{} - {}", range.start, range.end, name);
+        }
+    }
+
+    pub fn list_projects(&self) {
+        for user in &self.users {
+            let name = user.clone().name;
+            let projects = user.clone().projects;
+            for project in projects {
+                println!("{} - {}", name, project.nice_name);
+            }
         }
     }
 
