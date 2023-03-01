@@ -19,8 +19,14 @@ fn main() {
                     let port_range_string = register_matches.get_one::<String>("range").unwrap();
                     let port_range = PortRange::new(port_range_string);
 
-                    cfg.users.push(User::new(username.clone(), port_range.clone()));
-                    println!("Registered new user [{}] with port range [{}:{}]", username, port_range.start, port_range.end);
+                    match cfg.create_user(username.clone(), port_range) {
+                        Ok(()) => {
+                            println!("Registered new user [{}] with port range [{}:{}]", username, port_range.start, port_range.end);
+                        }
+                        Err(()) => {
+                            println!("Failed to register new user, already exists");
+                        }
+                    }
                 }
                 _ => {
                     cfg.list_users();

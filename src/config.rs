@@ -121,4 +121,19 @@ impl Config {
             }
         }
     }
+
+    pub fn create_user(&mut self, name: String, range: PortRange) -> Result<(), ()> {
+        for user in self.users.iter_mut() {
+            if user.name == name {
+                return Err(());
+            }
+        }
+
+        self.users.push(User {
+            name,
+            port_range: range,
+            projects: vec![]
+        });
+        Ok(())
+    }
 }
