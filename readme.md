@@ -17,6 +17,9 @@ This is tackled in 2 ways (currently, there might be more in the future!)
 > #### User per project
 > When a user creates a new project, a new user is created with the name being `<username>-<project-name>` (Note: In the project listing, the `<username>` portion is omitted for brevity). This new user is assigned the same group as the original user account, ensuring that the same port restrictions are placed.
 
+> #### File storage
+> There is a single file used by memocfg, it's stored at /var/lib/memocfg/data.json
+
 ## Usage examples (No sudo)
 
 ### Check registered users
