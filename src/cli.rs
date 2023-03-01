@@ -1,4 +1,4 @@
-use clap::Command;
+use clap::{arg, Arg, ArgAction, Command, command};
 
 pub fn cli() -> Command {
     Command::new("memocfg")
@@ -14,6 +14,19 @@ pub fn cli() -> Command {
                 .subcommand(
                     Command::new("register")
                         .about("Register a new user to memocfg")
+                        .arg(
+                            Arg::new("user")
+                                .action(ArgAction::Set)
+                                .required(true)
+                                .num_args(1)
+                        )
+                        .arg(
+                            Arg::new("range")
+                                .long("range")
+                                .action(ArgAction::Set)
+                                .required(true)
+                                .num_args(1)
+                        )
                 )
         )
         .subcommand(
