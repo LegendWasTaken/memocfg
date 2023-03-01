@@ -1,6 +1,5 @@
 use std::{env, fs};
 use std::path::{Path, PathBuf};
-use dotenv::dotenv;
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Debug, Copy, Clone)]
@@ -30,7 +29,7 @@ impl User {
         format!("memocfg-{}", self.name)
     }
 
-    pub fn new(name: &String, port_range: PortRange) -> User {
+    pub fn new(name: String, port_range: PortRange) -> User {
         User {
             name: name.to_string(),
             port_range,
@@ -67,14 +66,12 @@ impl Config {
     }
 
     pub fn list_users(&self) {
-        println!("[Registered Users]");
         for user in &self.clone().users {
             println!("{} - {}", user.clone().name, user.clone().get_group_name());
         }
     }
 
     pub fn list_ports(&self) {
-        println!("[Internal port ranges]");
         for user in &self.clone().users {
             let range = user.port_range;
             let name = user.clone().name;
@@ -96,5 +93,14 @@ impl Config {
     pub fn save(self) {
         let as_json = serde_json::to_string(&self).unwrap();
         fs::write(Config::get_path(), as_json).expect("Failed to save config");
+    }
+
+    pub fn update_port_range(&mut self, name: String, range: PortRange) {
+        for user in &mut self.users {
+            if user.name == name {
+                user.port_range = range;
+                break;
+            }
+        }
     }
 }

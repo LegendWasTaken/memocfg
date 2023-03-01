@@ -39,6 +39,19 @@ pub fn cli() -> Command {
                 .subcommand(
                     Command::new("set")
                         .about("Set new port range restriction for the specified user")
+                        .arg(
+                            Arg::new("user")
+                                .action(ArgAction::Set)
+                                .required(true)
+                                .num_args(1)
+                        )
+                        .arg(
+                            Arg::new("range")
+                                .long("range")
+                                .action(ArgAction::Set)
+                                .required(true)
+                                .num_args(1)
+                        )
                 )
         )
         .subcommand(
