@@ -1,9 +1,12 @@
+use dotenv::dotenv;
 use crate::config::{Config, PortRange, User};
 
 mod cli;
 mod config;
 
 fn main() {
+    dotenv().ok();
+
     let mut cfg = Config::load();
 
     let matches = cli::cli().get_matches();
@@ -37,4 +40,6 @@ fn main() {
         }
         _ => unreachable!(),
     }
+
+    cfg.save();
 }

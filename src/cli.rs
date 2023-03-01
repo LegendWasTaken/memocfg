@@ -1,4 +1,4 @@
-use clap::{arg, Arg, ArgAction, Command, command};
+use clap::{Arg, ArgAction, Command};
 
 pub fn cli() -> Command {
     Command::new("memocfg")

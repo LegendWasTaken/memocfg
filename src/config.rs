@@ -1,3 +1,6 @@
+use std::{env, fs};
+use std::path::{Path, PathBuf};
+use dotenv::dotenv;
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Debug, Copy, Clone)]
@@ -37,10 +40,32 @@ impl User {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
-    pub users: Vec<User>
+    pub users: Vec<User>,
 }
 
 impl Config {
+    fn get_path() -> PathBuf {
+        match env::var("memocfg_environment") {
+            Ok(str) => {
+                if str == "DEVELOPMENT" {
+                    Path::new("memocfg.json").to_path_buf()
+                } else {
+                    Path::new("/var/lib/memocfg.json").to_path_buf()
+                }
+            }
+            Err(_) => {
+                // Default to assume that we're in a live environment
+                Path::new("/var/lib/memocfg.json").to_path_buf()
+            }
+        }
+    }
+
+    fn load_internal() -> Option<Config> {
+        let data = fs::read_to_string(Config::get_path()).ok()?;
+        let cfg: Config = serde_json::from_str(data.as_str()).ok()?;
+        Some(cfg)
+    }
+
     pub fn list_users(&self) {
         println!("[Registered Users]");
         for user in &self.clone().users {
@@ -58,19 +83,18 @@ impl Config {
     }
 
     pub fn load() -> Config {
-        // Todo: Implementing loading from file
-        Config {
-            users: vec![User {
-                name: String::from("User1"),
-                port_range: PortRange {
-                    start: 2001,
-                    end: 2500,
+        match Config::load_internal() {
+            None => {
+                Config {
+                    users: vec![]
                 }
-            }]
+            }
+            Some(cfg) => { cfg }
         }
     }
 
     pub fn save(self) {
-        // Todo
+        let as_json = serde_json::to_string(&self).unwrap();
+        fs::write(Config::get_path(), as_json).expect("Failed to save config");
     }
 }
