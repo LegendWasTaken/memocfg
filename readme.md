@@ -21,7 +21,7 @@ This is tackled in 2 ways (currently, there might be more in the future!)
 
 ### Check registered users
 ```
-$ memocfg --users
+$ memocfg users [list]
 [Registered users]
 User1
 User2
@@ -30,7 +30,7 @@ User3
 
 ### Check ports
 ```
-$ memocfg --ports
+$ memocfg ports [list]
 [Public ports]
 21 - FTP
 22 - SSH
@@ -46,7 +46,7 @@ $ memocfg --ports
 
 ### Check projects
 ```
-$ memocfg --projects
+$ memocfg projects [list]
 [@User1]
 basic-backend
 website-frontend
@@ -63,11 +63,11 @@ personal-website
 ## Usage examples (sudo)
 ### Change port range for a given user 
 ```
-$ memocfg --update User1 --range 2001:3000
+$ memocfg ports set User1 --range 2001:3000
 Updated the port restrictions for [User1]
 ```
 
 ### Register a new user 
 ```
-$ memocfg --register User4 --range 3501:4000
+$ memocfg users register User4 --range 3501:4000
 ```
